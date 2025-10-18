@@ -1,0 +1,5 @@
+{
+  "name": "Student Community Help Platform",
+  "description": "A web platform for students to post academic problems and help each other with solutions and comments. Built with React and styled with Tailwind CSS.",
+  "requestFramePermissions": []
+}
