@@ -27,10 +27,17 @@
 </script>
   <!-- Add Babel Standalone for JSX and TSX transpilation -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Configure Babel to process the script as a module -->
+  <script type="text/babel-config">
+    {
+      "presets": ["react", "typescript"],
+      "sourceType": "module"
+    }
+  </script>
 </head>
   <body class="bg-gray-900 text-gray-300">
     <div id="root"></div>
-    <!-- Change script type to text/babel so babel can transpile it -->
-    <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
+    <!-- Babel will now process this script using the config above -->
+    <script type="text/babel" src="./index.tsx"></script>
   </body>
 </html>
