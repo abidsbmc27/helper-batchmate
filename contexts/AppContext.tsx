@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { User, Post, Comment, Subject } from '../types';
 import { MOCK_USERS, MOCK_POSTS } from '../services/mockData';
+import { hashPassword, checkPassword } from '../services/auth';
 
 interface AppContextType {
   currentUser: User | null;
@@ -21,18 +22,42 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser && savedUser !== 'null') {
+        return JSON.parse(savedUser);
+      }
+    } catch (error) {
+      console.error("Failed to parse currentUser from localStorage", error);
+      localStorage.removeItem('currentUser');
+    }
+    return null;
   });
   
   const [users, setUsers] = useState<User[]>(() => {
-    const savedUsers = localStorage.getItem('users');
-    return savedUsers ? JSON.parse(savedUsers) : [];
+    try {
+      const savedUsers = localStorage.getItem('users');
+      if (savedUsers) {
+        return JSON.parse(savedUsers);
+      }
+    } catch (error) {
+      console.error("Failed to parse users from localStorage", error);
+      localStorage.removeItem('users');
+    }
+    return [];
   });
   
   const [posts, setPosts] = useState<Post[]>(() => {
-    const savedPosts = localStorage.getItem('posts');
-    return savedPosts ? JSON.parse(savedPosts) : [];
+    try {
+        const savedPosts = localStorage.getItem('posts');
+        if (savedPosts) {
+          return JSON.parse(savedPosts);
+        }
+    } catch (error) {
+        console.error("Failed to parse posts from localStorage", error);
+        localStorage.removeItem('posts');
+    }
+    return [];
   });
 
   const publicUsers = useMemo(() => {
@@ -67,8 +92,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, [posts]);
 
   const login = (email: string, pass: string): boolean => {
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
-    if (user) {
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (user && user.password && checkPassword(pass, user.password)) {
       const { password, ...userToStore } = user;
       setCurrentUser(userToStore);
       return true;
@@ -85,7 +110,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
       return false; // User already exists
     }
-    const newUser: User = { id: `user_${Date.now()}`, fullName, email, password: pass, bio: '', nickname: '' };
+    const hashedPassword = hashPassword(pass);
+    const newUser: User = { id: `user_${Date.now()}`, fullName, email, password: hashedPassword, bio: '', nickname: '' };
     setUsers(prevUsers => [...prevUsers, newUser]);
     return true;
   };

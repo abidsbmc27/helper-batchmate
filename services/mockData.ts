@@ -1,9 +1,11 @@
 import { User, Post, Subject, Comment } from '../types';
 
+const HASHED_MOCK_PASS = 'MzIxZHJvd3NzYXA='; // "password123" reversed and base64 encoded
+
 export const MOCK_USERS: User[] = [
-  { id: 'user_1', fullName: 'রহিম শেখ', nickname: 'ডিজাইন মাস্টার', email: 'rahim@test.com', password: 'password123', bio: 'আমি একজন গ্রাফিক্স ডিজাইনার।' },
-  { id: 'user_2', fullName: 'করিম চৌধুরী', nickname: 'ভিডিও গুরু', email: 'karim@test.com', password: 'password123', bio: 'ভিডিও এডিটিং আমার প্যাশন।' },
-  { id: 'user_3', fullName: 'সখিনা বেগম', nickname: 'হিসাব বিজ্ঞানী', email: 'sokhina@test.com', password: 'password123', bio: 'আমি একাউন্টিং নিয়ে পড়াশোনা করছি।' },
+  { id: 'user_1', fullName: 'রহিম শেখ', nickname: 'ডিজাইন মাস্টার', email: 'rahim@test.com', password: HASHED_MOCK_PASS, bio: 'আমি একজন গ্রাফিক্স ডিজাইনার।' },
+  { id: 'user_2', fullName: 'করিম চৌধুরী', nickname: 'ভিডিও গুরু', email: 'karim@test.com', password: HASHED_MOCK_PASS, bio: 'ভিডিও এডিটিং আমার প্যাশন।' },
+  { id: 'user_3', fullName: 'সখিনা বেগম', nickname: 'হিসাব বিজ্ঞানী', email: 'sokhina@test.com', password: HASHED_MOCK_PASS, bio: 'আমি একাউন্টিং নিয়ে পড়াশোনা করছি।' },
 ];
 
 const MOCK_COMMENTS: Comment[] = [
