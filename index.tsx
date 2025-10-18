@@ -149,7 +149,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return null;
   });
   
-  const [users, setUsers] = useState<User[]>(() => {
+  const [users, setUsers] = useState(() => {
     try {
       const savedUsers = localStorage.getItem('users');
       if (savedUsers) {
@@ -162,7 +162,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return [];
   });
   
-  const [posts, setPosts] = useState<Post[]>(() => {
+  const [posts, setPosts] = useState(() => {
     try {
         const savedPosts = localStorage.getItem('posts');
         if (savedPosts) {
